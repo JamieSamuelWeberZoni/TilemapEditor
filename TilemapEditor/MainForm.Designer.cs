@@ -33,7 +33,11 @@
             this.ModifyTilesetPage = new System.Windows.Forms.TabPage();
             this.TilemapListPage = new System.Windows.Forms.TabPage();
             this.ModifyTilemapPage = new System.Windows.Forms.TabPage();
+            this.testBtn = new System.Windows.Forms.Button();
+            this.testPbx = new System.Windows.Forms.PictureBox();
             this.MainTabControl.SuspendLayout();
+            this.TilemapListPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.testPbx)).BeginInit();
             this.SuspendLayout();
             // 
             // MainTabControl
@@ -70,6 +74,8 @@
             // 
             // TilemapListPage
             // 
+            this.TilemapListPage.Controls.Add(this.testPbx);
+            this.TilemapListPage.Controls.Add(this.testBtn);
             this.TilemapListPage.Location = new System.Drawing.Point(4, 24);
             this.TilemapListPage.Name = "TilemapListPage";
             this.TilemapListPage.Padding = new System.Windows.Forms.Padding(3);
@@ -88,6 +94,24 @@
             this.ModifyTilemapPage.Text = "Modifier Tilemap";
             this.ModifyTilemapPage.UseVisualStyleBackColor = true;
             // 
+            // testBtn
+            // 
+            this.testBtn.Location = new System.Drawing.Point(666, 483);
+            this.testBtn.Name = "testBtn";
+            this.testBtn.Size = new System.Drawing.Size(75, 23);
+            this.testBtn.TabIndex = 0;
+            this.testBtn.Text = "test";
+            this.testBtn.UseVisualStyleBackColor = true;
+            this.testBtn.Click += new System.EventHandler(this.testBtn_Click);
+            // 
+            // testPbx
+            // 
+            this.testPbx.Location = new System.Drawing.Point(8, 6);
+            this.testPbx.Name = "testPbx";
+            this.testPbx.Size = new System.Drawing.Size(512, 512);
+            this.testPbx.TabIndex = 1;
+            this.testPbx.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -97,6 +121,8 @@
             this.Name = "MainForm";
             this.Text = "Tilemap Editor";
             this.MainTabControl.ResumeLayout(false);
+            this.TilemapListPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.testPbx)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -108,5 +134,7 @@
         private TabPage ModifyTilesetPage;
         private TabPage TilemapListPage;
         private TabPage ModifyTilemapPage;
+        private PictureBox testPbx;
+        private Button testBtn;
     }
 }

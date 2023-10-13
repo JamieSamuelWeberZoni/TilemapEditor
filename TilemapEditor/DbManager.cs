@@ -67,7 +67,7 @@ namespace TilemapEditor
         /// <returns>A datatable of the data returned from the database</returns>
         private DataTable GetTable(string sql)
         {
-            MySqlCommand query = new(sql);
+            MySqlCommand query = new(sql, connection);
             MySqlDataAdapter adapter = new MySqlDataAdapter(query);
             DataTable table = new DataTable();
             adapter.Fill(table);
@@ -101,7 +101,7 @@ namespace TilemapEditor
         {
             DataRow tilemap = GetTable($"SELECT * FROM Tilemaps WHERE idTilemap = {id};").Rows[0];
             Tileset tileset = GetTileset((int)tilemap["idTileset"]);
-            DataTable tiles = GetTable($"SELECT posX, posY, number FROM TilesPosition WHERE idTilemap = {id} ORDER BY posX THEN BY posY;");
+            DataTable tiles = GetTable($"SELECT posX, posY, number FROM TilesPosition WHERE idTilemap = {id} ORDER BY posX, posY;");
             return new Tilemap((int)tilemap["idTilemap"], (string)tilemap["name"], tileset, tiles);
         }
     }

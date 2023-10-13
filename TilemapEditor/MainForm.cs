@@ -9,9 +9,18 @@ namespace TilemapEditor
 {
     public partial class MainForm : Form
     {
+        DbManager db;
+
         public MainForm()
         {
             InitializeComponent();
+            db = DbManager.Instance;
+        }
+
+        private void testBtn_Click(object sender, EventArgs e)
+        {
+            Tilemap map = db.GetTilemap(1);
+            testPbx.Image = map.GetImage;
         }
     }
 }

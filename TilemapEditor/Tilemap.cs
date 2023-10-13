@@ -60,6 +60,9 @@ namespace TilemapEditor
             }
         }
 
+        /// <summary>
+        /// Get the image of the map
+        /// </summary>
         public Bitmap GetImage
         {
             get
@@ -71,7 +74,7 @@ namespace TilemapEditor
                 {
                     for (int y = 0; y < 32; y++)
                     {
-                        int nbr = this.tiles[x, y];
+                        int nbr = this.tiles[y, x];
                         g.DrawImage(tiles[nbr], new Point(x * 16, y * 16));
                     }
                 }
