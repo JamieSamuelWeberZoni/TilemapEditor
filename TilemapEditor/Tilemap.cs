@@ -74,8 +74,8 @@ namespace TilemapEditor
                 {
                     for (int y = 0; y < 32; y++)
                     {
-                        int nbr = this.tiles[y, x];
-                        g.DrawImage(tiles[nbr], new Point(x * 16, y * 16));
+                        int nbr = this.tiles[x, y];
+                        g.DrawImage(tiles[nbr], new Point(y * 16, x * 16));
                     }
                 }
                 g.Dispose();
