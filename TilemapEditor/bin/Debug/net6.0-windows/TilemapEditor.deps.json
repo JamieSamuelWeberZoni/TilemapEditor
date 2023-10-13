@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "TilemapEditor/1.0.0": {
+        "runtime": {
+          "TilemapEditor.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TilemapEditor/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

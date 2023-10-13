@@ -1,0 +1,17 @@
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\bin\Debug\net6.0-windows\TilemapEditor.exe
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\bin\Debug\net6.0-windows\TilemapEditor.deps.json
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\bin\Debug\net6.0-windows\TilemapEditor.runtimeconfig.json
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\bin\Debug\net6.0-windows\TilemapEditor.dll
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\bin\Debug\net6.0-windows\TilemapEditor.pdb
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.csproj.AssemblyReference.cache
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.MainForm.resources
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.csproj.GenerateResource.cache
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.AssemblyInfoInputs.cache
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.AssemblyInfo.cs
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.csproj.CoreCompileInputs.cache
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.dll
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\refint\TilemapEditor.dll
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.pdb
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.genruntimeconfig.cache
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\ref\TilemapEditor.dll
