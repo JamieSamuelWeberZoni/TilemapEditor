@@ -124,7 +124,7 @@ namespace TilemapEditor
         {
             if (NameTbx.Text != "")
             {
-
+                db.AddTileset(NameTbx.Text)
             }
         }
     }

@@ -147,7 +147,7 @@ namespace TilemapEditor
                 ["@img"] = (Convert.ToHexString(ms.ToArray()), MySqlDbType.VarChar),
                 ["@id"] = (Convert.ToString(id), MySqlDbType.Int32)
             };
-            ChangeDatabase($"INSERT INTO Tiles (number, image, idTileset) VALUES (0, x@img, @id);");
+            ChangeDatabase("INSERT INTO Tiles (number, image, idTileset) VALUES (0, x@img, @id);", opt);
         }
     }
 }

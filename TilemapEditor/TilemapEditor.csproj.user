@@ -4,6 +4,9 @@
     <Compile Update="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="NewSetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="TilemapForm.cs">
       <SubType>Form</SubType>
     </Compile>
