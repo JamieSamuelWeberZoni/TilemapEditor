@@ -17,7 +17,7 @@ namespace TilemapEditor
     /// <summary>
     /// The class that manages the discussions with the database
     /// </summary>
-    internal class DbManager
+    public class DbManager
     {
         /// <summary>
         /// The connection to the database
@@ -72,6 +72,17 @@ namespace TilemapEditor
             DataTable table = new DataTable();
             adapter.Fill(table);
             return table;
+        }
+
+        /// <summary>
+        /// If an Update or Insert request is needed, call this function
+        /// Change the data from the database
+        /// </summary>
+        /// <param name="sql">The sql query to execute</param>
+        private void ChangeDatabase(string sql)
+        {
+            MySqlCommand query = new(sql, connection);
+            query.ExecuteNonQuery();
         }
 
         /// <summary>

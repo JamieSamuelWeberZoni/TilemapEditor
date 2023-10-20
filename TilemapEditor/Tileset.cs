@@ -16,7 +16,7 @@ namespace TilemapEditor
     /// <summary>
     /// A class of a tileset
     /// </summary>
-    internal class Tileset
+    public class Tileset
     {
         /// <summary>
         /// The id of the tileset
@@ -78,19 +78,20 @@ namespace TilemapEditor
         /// <summary>
         /// Return an image of all the tiles
         /// </summary>
-        public Bitmap GetTilesImg
+        public Bitmap GetImage
         {
             get
             {
                 List<Bitmap> tiles = this.GetTiles;
-                Bitmap img = new Bitmap(112, 512);
+                Bitmap img = new Bitmap(224, 512);
                 Graphics g = Graphics.FromImage(img);
                 g.Clear(Color.White);
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
                 for(int i = 0; i < tiles.Count; i++)
                 {
-                    int x = (i % 7) * 16;
-                    int y = Convert.ToInt32(Math.Floor(i / 7.0)) * 16;
-                    g.DrawImage(tiles[i], x, y);
+                    int x = (i % 7) * 32;
+                    int y = Convert.ToInt32(Math.Floor(i / 7.0)) * 32;
+                    g.DrawImage(tiles[i], x, y, 33, 33);
                 }
                 g.Dispose();
                 return img;

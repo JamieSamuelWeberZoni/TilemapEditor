@@ -1,9 +1,11 @@
+
+using System.Data;
 /**
- * Project      : Tilemap Editor
- * Description  : A C# program where you can modify and create tilesets and tilemaps with an access to a database
- * File         : MainForm.cs
- * Author       : Weber Jamie
- * Date         : 13 October 2023
+* Project      : Tilemap Editor
+* Description  : A C# program where you can modify and create tilesets and tilemaps with an access to a database
+* File         : MainForm.cs
+* Author       : Weber Jamie
+* Date         : 13 October 2023
 **/
 namespace TilemapEditor
 {
@@ -17,10 +19,34 @@ namespace TilemapEditor
             db = DbManager.Instance;
         }
 
-        private void testBtn_Click(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            Tilemap map = db.GetTilemap(1);
-            testPbx.Image = map.GetImage;
+            RefreshTilesets();
+            RefreshTilemaps();
+        }
+
+        private void RefreshTilesets()
+        {
+            TilesetsDgv.DataSource = db.Tilesets;
+        }
+
+        private void RefreshTilemaps()
+        {
+            TilemapsDgv.DataSource = db.Tilemaps;
+        }
+
+        private void PreviewTilesetBtn_Click(object sender, EventArgs e)
+        {
+            int id = (int)TilesetsDgv.CurrentRow.Cells[0].Value;
+            TilesetForm form = new(db.GetTileset(id));
+            form.Show();
+        }
+
+        private void PreviewTilemapBtn_Click(object sender, EventArgs e)
+        {
+            int id = (int)TilemapsDgv.CurrentRow.Cells[0].Value;
+            TilemapForm form = new(db.GetTilemap(id));
+            form.Show();
         }
     }
 }

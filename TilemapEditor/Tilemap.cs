@@ -16,7 +16,7 @@ namespace TilemapEditor
     /// <summary>
     /// The class for a tilemap
     /// </summary>
-    internal class Tilemap
+    public class Tilemap
     {
         /// <summary>
         /// The id of the tilemap
@@ -37,6 +37,8 @@ namespace TilemapEditor
         /// The tile number for each positions
         /// </summary>
         private int[,] tiles;
+
+        public string Name { get { return name; } }
 
         /// <summary>
         /// The constructor of the class
