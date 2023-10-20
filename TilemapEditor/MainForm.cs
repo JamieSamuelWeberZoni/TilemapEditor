@@ -12,11 +12,27 @@ namespace TilemapEditor
     public partial class MainForm : Form
     {
         DbManager db;
+        private static MainForm? instance;
 
-        public MainForm()
+        private MainForm()
         {
             InitializeComponent();
             db = DbManager.Instance;
+        }
+
+        /// <summary>
+        /// The singleton for this class to get only one instance
+        /// </summary>
+        public static MainForm Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new MainForm();
+                }
+                return instance;
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)

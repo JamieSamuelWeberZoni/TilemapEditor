@@ -64,10 +64,18 @@ namespace TilemapEditor
         /// Get the requested data from the database by using the sql query given in parameter and put it in a DataTable
         /// </summary>
         /// <param name="sql">The sql query to execute</param>
+        /// <param name="options">The options if needed</param>
         /// <returns>A datatable of the data returned from the database</returns>
-        private DataTable GetTable(string sql)
+        private DataTable GetTable(string sql, Dictionary<string, (string, MySqlDbType)>? options = null)
         {
             MySqlCommand query = new(sql, connection);
+            if (options != null)
+            {
+                foreach (KeyValuePair<string, (string, MySqlDbType)> option in options)
+                {
+                    query.Parameters.Add(option.Key, option.Value.Item2).Value = option.Value.Item1;
+                }
+            }
             MySqlDataAdapter adapter = new MySqlDataAdapter(query);
             DataTable table = new DataTable();
             adapter.Fill(table);
@@ -79,9 +87,17 @@ namespace TilemapEditor
         /// Change the data from the database
         /// </summary>
         /// <param name="sql">The sql query to execute</param>
-        private void ChangeDatabase(string sql)
+        /// <param name="options">The options if needed</param>
+        private void ChangeDatabase(string sql, Dictionary<string, (string, MySqlDbType)>? options = null)
         {
             MySqlCommand query = new(sql, connection);
+            if (options != null)
+            {
+                foreach(KeyValuePair<string, (string, MySqlDbType)> option in options)
+                {
+                    query.Parameters.Add(option.Key, option.Value.Item2).Value = option.Value.Item1;
+                }
+            }
             query.ExecuteNonQuery();
         }
 
@@ -108,12 +124,30 @@ namespace TilemapEditor
             return new Tileset((int)tileset["idTileset"], (string)tileset["name"], tiles);
         }
 
+        /// <summary>
+        /// Get a tilemap depending on the given id
+        /// </summary>
+        /// <param name="id">The id of the tilemap</param>
+        /// <returns>A tilemap instance</returns>
         public Tilemap GetTilemap(int id)
         {
             DataRow tilemap = GetTable($"SELECT * FROM Tilemaps WHERE idTilemap = {id};").Rows[0];
             Tileset tileset = GetTileset((int)tilemap["idTileset"]);
             DataTable tiles = GetTable($"SELECT posX, posY, number FROM TilesPosition WHERE idTilemap = {id} ORDER BY posX, posY;");
             return new Tilemap((int)tilemap["idTilemap"], (string)tilemap["name"], tileset, tiles);
+        }
+
+        public void AddTileset(string name, Bitmap tile)
+        {
+            MemoryStream ms = new MemoryStream();
+            tile.Save(ms, tile.RawFormat);
+            ChangeDatabase("INSERT INTO Tilesets (name) VALUES (@name);", new Dictionary<string, (string, MySqlDbType)>() { ["@name"] = (name, MySqlDbType.VarChar)});
+            int id = (int)(GetTable("SELECT Tilesets.idTileset AS 'id' FROM Tilesets WHERE Tilesets.name = @name;", new Dictionary<string, (string, MySqlDbType)>() { ["@name"] = (name, MySqlDbType.VarChar) }).Rows[0]["id"]);
+            Dictionary<string, (string, MySqlDbType)> opt = new Dictionary<string, (string, MySqlDbType)>() {
+                ["@img"] = (Convert.ToHexString(ms.ToArray()), MySqlDbType.VarChar),
+                ["@id"] = (Convert.ToString(id), MySqlDbType.Int32)
+            };
+            ChangeDatabase($"INSERT INTO Tiles (number, image, idTileset) VALUES (0, x@img, @id);");
         }
     }
 }
