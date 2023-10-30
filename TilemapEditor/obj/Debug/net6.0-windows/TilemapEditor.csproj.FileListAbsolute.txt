@@ -35,3 +35,4 @@ C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\bin\D
 C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.csproj.CopyComplete
 C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.TilemapForm.resources
 C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.TilesetForm.resources
+C:\Users\Jamie.wbr\Desktop\Vendredi\3eme\APROG\TilemapEditor\TilemapEditor\obj\Debug\net6.0-windows\TilemapEditor.NewSetForm.resources

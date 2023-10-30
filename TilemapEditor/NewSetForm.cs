@@ -117,6 +117,7 @@ namespace TilemapEditor
 
         /// <summary>
         /// When the create button is pressed
+        /// Verify if there is a name given and create a new tileset in the database
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event</param>
@@ -124,8 +125,30 @@ namespace TilemapEditor
         {
             if (NameTbx.Text != "")
             {
-                db.AddTileset(NameTbx.Text)
+                db.AddTileset(NameTbx.Text, tile);
+                main.RefreshTilesets();
+                this.Close();
             }
+            else
+            {
+                MessageBox.Show("Veuillez remplir tout les champs svp");
+            }
+        }
+
+        /// <summary>
+        /// When the cancel button is pressed
+        /// close this form
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event</param>
+        private void CancelBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void NewSetForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            main.Enabled = true;
         }
     }
 }

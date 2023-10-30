@@ -83,7 +83,7 @@
             this.RefreshTilesetsBtn.Name = "RefreshTilesetsBtn";
             this.RefreshTilesetsBtn.Size = new System.Drawing.Size(128, 48);
             this.RefreshTilesetsBtn.TabIndex = 6;
-            this.RefreshTilesetsBtn.Text = "Rafraishir";
+            this.RefreshTilesetsBtn.Text = "Rafraichir";
             this.RefreshTilesetsBtn.UseVisualStyleBackColor = true;
             // 
             // newTilesetBtn
@@ -94,6 +94,7 @@
             this.newTilesetBtn.TabIndex = 5;
             this.newTilesetBtn.Text = "Nouveau Tileset";
             this.newTilesetBtn.UseVisualStyleBackColor = true;
+            this.newTilesetBtn.Click += new System.EventHandler(this.newTilesetBtn_Click);
             // 
             // ModifyTilesetBtn
             // 
@@ -163,7 +164,7 @@
             this.RefreshTilemapsBtn.Name = "RefreshTilemapsBtn";
             this.RefreshTilemapsBtn.Size = new System.Drawing.Size(128, 48);
             this.RefreshTilemapsBtn.TabIndex = 10;
-            this.RefreshTilemapsBtn.Text = "Rafraishir";
+            this.RefreshTilemapsBtn.Text = "Rafraichir";
             this.RefreshTilemapsBtn.UseVisualStyleBackColor = true;
             // 
             // NewTilemapBtn
@@ -228,6 +229,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 573);
             this.Controls.Add(this.MainTabControl);
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tilemap Editor";

@@ -122,6 +122,7 @@
             this.CancelBtn.TabIndex = 8;
             this.CancelBtn.Text = "Annuler";
             this.CancelBtn.UseVisualStyleBackColor = true;
+            this.CancelBtn.Click += new System.EventHandler(this.CancelBtn_Click);
             // 
             // NewSetForm
             // 
@@ -139,7 +140,9 @@
             this.Controls.Add(this.TitleLbl);
             this.MaximizeBox = false;
             this.Name = "NewSetForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "New";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.NewSetForm_FormClosed);
             this.Load += new System.EventHandler(this.NewSetForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.TilePbx)).EndInit();
             this.ResumeLayout(false);
