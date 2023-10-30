@@ -36,6 +36,13 @@
             this.PreviewTilesetBtn = new System.Windows.Forms.Button();
             this.TilesetsDgv = new System.Windows.Forms.DataGridView();
             this.ModifyTilesetPage = new System.Windows.Forms.TabPage();
+            this.AddTileBtn = new System.Windows.Forms.Button();
+            this.ModifyTileBtn = new System.Windows.Forms.Button();
+            this.SelectedTileLabel = new System.Windows.Forms.Label();
+            this.TileTilesetPbx = new System.Windows.Forms.PictureBox();
+            this.TilesetSizeLbl = new System.Windows.Forms.Label();
+            this.TilesetNameLbl = new System.Windows.Forms.Label();
+            this.TilesetPbx = new System.Windows.Forms.PictureBox();
             this.TilemapListPage = new System.Windows.Forms.TabPage();
             this.RefreshTilemapsBtn = new System.Windows.Forms.Button();
             this.NewTilemapBtn = new System.Windows.Forms.Button();
@@ -46,6 +53,9 @@
             this.MainTabControl.SuspendLayout();
             this.TilesetListPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TilesetsDgv)).BeginInit();
+            this.ModifyTilesetPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TileTilesetPbx)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TilesetPbx)).BeginInit();
             this.TilemapListPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TilemapsDgv)).BeginInit();
             this.SuspendLayout();
@@ -85,6 +95,7 @@
             this.RefreshTilesetsBtn.TabIndex = 6;
             this.RefreshTilesetsBtn.Text = "Rafraichir";
             this.RefreshTilesetsBtn.UseVisualStyleBackColor = true;
+            this.RefreshTilesetsBtn.Click += new System.EventHandler(this.RefreshTilesetsBtn_Click);
             // 
             // newTilesetBtn
             // 
@@ -104,6 +115,7 @@
             this.ModifyTilesetBtn.TabIndex = 4;
             this.ModifyTilesetBtn.Text = "Modifier Tileset";
             this.ModifyTilesetBtn.UseVisualStyleBackColor = true;
+            this.ModifyTilesetBtn.Click += new System.EventHandler(this.ModifyTilesetBtn_Click);
             // 
             // PreviewTilesetBtn
             // 
@@ -135,6 +147,13 @@
             // 
             // ModifyTilesetPage
             // 
+            this.ModifyTilesetPage.Controls.Add(this.AddTileBtn);
+            this.ModifyTilesetPage.Controls.Add(this.ModifyTileBtn);
+            this.ModifyTilesetPage.Controls.Add(this.SelectedTileLabel);
+            this.ModifyTilesetPage.Controls.Add(this.TileTilesetPbx);
+            this.ModifyTilesetPage.Controls.Add(this.TilesetSizeLbl);
+            this.ModifyTilesetPage.Controls.Add(this.TilesetNameLbl);
+            this.ModifyTilesetPage.Controls.Add(this.TilesetPbx);
             this.ModifyTilesetPage.Location = new System.Drawing.Point(4, 24);
             this.ModifyTilesetPage.Name = "ModifyTilesetPage";
             this.ModifyTilesetPage.Padding = new System.Windows.Forms.Padding(3);
@@ -142,6 +161,70 @@
             this.ModifyTilesetPage.TabIndex = 1;
             this.ModifyTilesetPage.Text = "Modifier Tileset";
             this.ModifyTilesetPage.UseVisualStyleBackColor = true;
+            // 
+            // AddTileBtn
+            // 
+            this.AddTileBtn.Location = new System.Drawing.Point(449, 370);
+            this.AddTileBtn.Name = "AddTileBtn";
+            this.AddTileBtn.Size = new System.Drawing.Size(197, 37);
+            this.AddTileBtn.TabIndex = 8;
+            this.AddTileBtn.Text = "Ajouter une nouvelle tile";
+            this.AddTileBtn.UseVisualStyleBackColor = true;
+            // 
+            // ModifyTileBtn
+            // 
+            this.ModifyTileBtn.Location = new System.Drawing.Point(449, 259);
+            this.ModifyTileBtn.Name = "ModifyTileBtn";
+            this.ModifyTileBtn.Size = new System.Drawing.Size(197, 37);
+            this.ModifyTileBtn.TabIndex = 7;
+            this.ModifyTileBtn.Text = "Modifier la tile séléctionnée";
+            this.ModifyTileBtn.UseVisualStyleBackColor = true;
+            // 
+            // SelectedTileLabel
+            // 
+            this.SelectedTileLabel.AutoSize = true;
+            this.SelectedTileLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.SelectedTileLabel.Location = new System.Drawing.Point(449, 128);
+            this.SelectedTileLabel.Name = "SelectedTileLabel";
+            this.SelectedTileLabel.Size = new System.Drawing.Size(127, 21);
+            this.SelectedTileLabel.TabIndex = 6;
+            this.SelectedTileLabel.Text = "Tile séléctionnée:";
+            // 
+            // TileTilesetPbx
+            // 
+            this.TileTilesetPbx.Location = new System.Drawing.Point(582, 110);
+            this.TileTilesetPbx.Name = "TileTilesetPbx";
+            this.TileTilesetPbx.Size = new System.Drawing.Size(64, 64);
+            this.TileTilesetPbx.TabIndex = 5;
+            this.TileTilesetPbx.TabStop = false;
+            // 
+            // TilesetSizeLbl
+            // 
+            this.TilesetSizeLbl.AutoSize = true;
+            this.TilesetSizeLbl.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TilesetSizeLbl.Location = new System.Drawing.Point(449, 65);
+            this.TilesetSizeLbl.Name = "TilesetSizeLbl";
+            this.TilesetSizeLbl.Size = new System.Drawing.Size(102, 21);
+            this.TilesetSizeLbl.TabIndex = 4;
+            this.TilesetSizeLbl.Text = "Tiles : 0 / 112";
+            // 
+            // TilesetNameLbl
+            // 
+            this.TilesetNameLbl.AutoSize = true;
+            this.TilesetNameLbl.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TilesetNameLbl.Location = new System.Drawing.Point(449, 44);
+            this.TilesetNameLbl.Name = "TilesetNameLbl";
+            this.TilesetNameLbl.Size = new System.Drawing.Size(77, 21);
+            this.TilesetNameLbl.TabIndex = 3;
+            this.TilesetNameLbl.Text = "Tileset : \"\"";
+            // 
+            // TilesetPbx
+            // 
+            this.TilesetPbx.Location = new System.Drawing.Point(113, 16);
+            this.TilesetPbx.Name = "TilesetPbx";
+            this.TilesetPbx.Size = new System.Drawing.Size(224, 512);
+            this.TilesetPbx.TabIndex = 2;
+            this.TilesetPbx.TabStop = false;
             // 
             // TilemapListPage
             // 
@@ -166,6 +249,7 @@
             this.RefreshTilemapsBtn.TabIndex = 10;
             this.RefreshTilemapsBtn.Text = "Rafraichir";
             this.RefreshTilemapsBtn.UseVisualStyleBackColor = true;
+            this.RefreshTilemapsBtn.Click += new System.EventHandler(this.RefreshTilemapsBtn_Click);
             // 
             // NewTilemapBtn
             // 
@@ -238,6 +322,10 @@
             this.MainTabControl.ResumeLayout(false);
             this.TilesetListPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TilesetsDgv)).EndInit();
+            this.ModifyTilesetPage.ResumeLayout(false);
+            this.ModifyTilesetPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TileTilesetPbx)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TilesetPbx)).EndInit();
             this.TilemapListPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TilemapsDgv)).EndInit();
             this.ResumeLayout(false);
@@ -261,5 +349,12 @@
         private Button NewTilemapBtn;
         private Button ModifyTilemapBtn;
         private Button PreviewTilemapBtn;
+        private PictureBox TilesetPbx;
+        private Label TilesetNameLbl;
+        private Label TilesetSizeLbl;
+        private PictureBox TileTilesetPbx;
+        private Label SelectedTileLabel;
+        private Button ModifyTileBtn;
+        private Button AddTileBtn;
     }
 }

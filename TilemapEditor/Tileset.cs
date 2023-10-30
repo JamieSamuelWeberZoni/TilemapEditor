@@ -98,5 +98,13 @@ namespace TilemapEditor
             }
         }
 
+        public int Size
+        {
+            get
+            {
+                return tiles.Rows.Count;
+            }
+        }
+
     }
 }
