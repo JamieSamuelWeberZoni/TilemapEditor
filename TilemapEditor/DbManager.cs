@@ -201,5 +201,47 @@ namespace TilemapEditor
                 }
             }
         }
+
+        /// <summary>
+        /// Add a tile to the given tileset
+        /// </summary>
+        /// <param name="idTileset">The id of the tileset</param>
+        /// <param name="tile">The image of the tile</param>
+        public void AddTile(int idTileset, Bitmap tile)
+        {
+            MemoryStream ms = new MemoryStream();
+            tile.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            Dictionary<string, (object, MySqlDbType)> opt = new()
+            {
+                ["@id"] = (idTileset, MySqlDbType.Int32)
+            };
+            int number = (int)(GetTable("SELECT COUNT(idTile) AS 'number' FROM Tiles WHERE idTileset = @id;", opt).Rows[0]["number"]);
+            opt = new()
+            {
+                ["@id"] = (idTileset, MySqlDbType.Int32),
+                ["@img"] = (ms.ToArray(), MySqlDbType.LongBlob),
+                ["@number"] = (number, MySqlDbType.Int32)
+            };
+            ChangeDatabase("INSERT INTO Tiles (idTileset, image, number) VALUES (@id, @img, @number);", opt);
+        }
+
+        /// <summary>
+        /// Modify a given tile from a given tileset
+        /// </summary>
+        /// <param name="idTileset">The id of the tileset</param>
+        /// <param name="number">The number of the tile in the tileset</param>
+        /// <param name="tile">The new image of the tile</param>
+        public void ModifyTile(int idTileset, int number, Bitmap tile)
+        {
+            MemoryStream ms = new MemoryStream();
+            tile.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            Dictionary<string, (object, MySqlDbType)> opt = new()
+            {
+                ["@img"] = (ms.ToArray(), MySqlDbType.LongBlob),
+                ["@id"] = (idTileset, MySqlDbType.Int32),
+                ["@number"] = (number, MySqlDbType.Int32)
+            };
+            ChangeDatabase("UPDATE tiles SET image = @img WHERE idTileset = @id AND number = @number;", opt);
+        }
     }
 }

@@ -12,7 +12,7 @@ using System.Windows.Forms;
  * Description  : A C# program where you can modify and create tilesets and tilemaps with an access to a database
  * File         : NewSetForm.cs
  * Author       : Weber Jamie
- * Date         : 20 October 2023
+ * Date         : 20-30 October 2023
 **/
 namespace TilemapEditor
 {

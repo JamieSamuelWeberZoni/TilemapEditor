@@ -7,7 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+/**
+ * Project      : Tilemap Editor
+ * Description  : A C# program where you can modify and create tilesets and tilemaps with an access to a database
+ * File         : NewMapForm.cs
+ * Author       : Weber Jamie
+ * Date         : 30 October 2023
+**/
 namespace TilemapEditor
 {
     public partial class NewMapForm : Form
