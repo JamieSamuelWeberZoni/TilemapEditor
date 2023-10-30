@@ -243,5 +243,31 @@ namespace TilemapEditor
             };
             ChangeDatabase("UPDATE tiles SET image = @img WHERE idTileset = @id AND number = @number;", opt);
         }
+
+        /// <summary>
+        /// Modify The tilemap in the database
+        /// </summary>
+        /// <param name="idTilemap">The id of the tilemap</param>
+        /// <param name="tiles">An array of the number of the tiles of the tilemap</param>
+        public void ModifyMap(int idTilemap, int[,] tiles)
+        {
+            Dictionary<string, (object, MySqlDbType)> opt = new()
+            {
+                ["@id"] = (idTilemap, MySqlDbType.Int32),
+                ["@posX"] = (0, MySqlDbType.Int32),
+                ["@posY"] = (0, MySqlDbType.Int32),
+                ["@number"] = (0, MySqlDbType.Int32)
+            };
+            for (int i = 0; i < 32; i++)
+            {
+                opt["@posX"] = (i, MySqlDbType.Int32);
+                for (int ii = 0; ii < 32; ii++)
+                {
+                    opt["@posY"] = (ii, MySqlDbType.Int32);
+                    opt["@number"] = (tiles[i,ii], MySqlDbType.Int32);
+                    ChangeDatabase("UPDATE tilesPosition SET number = @number WHERE idTilemap = @id AND posX = @posX AND posY = @posY;", opt);
+                }
+            }
+        }
     }
 }
