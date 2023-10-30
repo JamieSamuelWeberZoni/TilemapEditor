@@ -119,8 +119,12 @@ namespace TilemapEditor
         /// <returns>A Tileset instance</returns>
         public Tileset GetTileset(int id)
         {
-            DataRow tileset = GetTable($"SELECT * FROM Tilesets WHERE idTileset = {id};").Rows[0];
-            DataTable tiles = GetTable($"SELECT image, number FROM Tiles WHERE idTileset = {id} ORDER BY number;");
+            Dictionary<string, (object, MySqlDbType)> opt = new()
+            {
+                ["@id"] = (id, MySqlDbType.Int32)
+            };
+            DataRow tileset = GetTable("SELECT * FROM Tilesets WHERE idTileset = @id;", opt).Rows[0];
+            DataTable tiles = GetTable("SELECT image, number FROM Tiles WHERE idTileset = @id ORDER BY number;", opt);
             return new Tileset((int)tileset["idTileset"], (string)tileset["name"], tiles);
         }
 
@@ -128,12 +132,16 @@ namespace TilemapEditor
         /// Get a tilemap depending on the given id
         /// </summary>
         /// <param name="id">The id of the tilemap</param>
-        /// <returns>A tilemap instance</returns>
+        /// <returns>A Tilemap instance</returns>
         public Tilemap GetTilemap(int id)
         {
-            DataRow tilemap = GetTable($"SELECT * FROM Tilemaps WHERE idTilemap = {id};").Rows[0];
+            Dictionary<string, (object, MySqlDbType)> opt = new()
+            {
+                ["@id"] = (id, MySqlDbType.Int32)
+            };
+            DataRow tilemap = GetTable("SELECT * FROM Tilemaps WHERE idTilemap = @id;", opt).Rows[0];
             Tileset tileset = GetTileset((int)tilemap["idTileset"]);
-            DataTable tiles = GetTable($"SELECT posX, posY, number FROM TilesPosition WHERE idTilemap = {id} ORDER BY posX, posY;");
+            DataTable tiles = GetTable("SELECT posX, posY, number FROM TilesPosition WHERE idTilemap = @id ORDER BY posX, posY;", opt);
             return new Tilemap((int)tilemap["idTilemap"], (string)tilemap["name"], tileset, tiles);
         }
 
