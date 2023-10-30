@@ -131,7 +131,7 @@ namespace TilemapEditor
             }
             else
             {
-                MessageBox.Show("Veuillez remplir tout les champs svp");
+                MessageBox.Show("Veuillez remplir tous les champs svp");
             }
         }
 
@@ -146,6 +146,12 @@ namespace TilemapEditor
             this.Close();
         }
 
+        /// <summary>
+        /// When the form is closed
+        /// Enable the main form
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event</param>
         private void NewSetForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             main.Enabled = true;

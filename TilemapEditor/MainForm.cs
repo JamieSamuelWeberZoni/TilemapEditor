@@ -114,5 +114,11 @@ namespace TilemapEditor
             new NewSetForm().Show();
             this.Enabled = false;
         }
+
+        private void NewTilemapBtn_Click(object sender, EventArgs e)
+        {
+            new NewMapForm().Show();
+            this.Enabled = false;
+        }
     }
 }

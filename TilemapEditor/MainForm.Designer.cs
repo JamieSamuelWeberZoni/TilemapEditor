@@ -175,6 +175,7 @@
             this.NewTilemapBtn.TabIndex = 9;
             this.NewTilemapBtn.Text = "Nouveau Tilemap";
             this.NewTilemapBtn.UseVisualStyleBackColor = true;
+            this.NewTilemapBtn.Click += new System.EventHandler(this.NewTilemapBtn_Click);
             // 
             // ModifyTilemapBtn
             // 
