@@ -265,7 +265,7 @@ namespace TilemapEditor
                 {
                     opt["@posY"] = (ii, MySqlDbType.Int32);
                     opt["@number"] = (tiles[i,ii], MySqlDbType.Int32);
-                    ChangeDatabase("UPDATE tilesPosition SET number = @number WHERE idTilemap = @id AND posX = @posX AND posY = @posY;", opt);
+                    ChangeDatabase("UPDATE TilesPosition SET number = @number WHERE idTilemap = @id AND posX = @posX AND posY = @posY;", opt);
                 }
             }
         }

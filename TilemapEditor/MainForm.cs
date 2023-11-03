@@ -36,6 +36,8 @@ namespace TilemapEditor
         /// </summary>
         private int selectTilemap;
 
+        private Tilemap? currMap;
+
         /// <summary>
         /// The constructor of this class
         /// initialize the components and get the instance of DbManager
@@ -206,7 +208,7 @@ namespace TilemapEditor
             {
                 return;
             }
-            selectTileset = x + y * 7;
+            selectTileset = nbr;
             DrawSelectedTile();
         }
 
@@ -254,7 +256,7 @@ namespace TilemapEditor
             {
                 foreach(Bitmap tile in img)
                 {
-                    db.AddTile(currSet.Id, tile);
+                    db.AddTile(currSet!.Id, tile);
                 }
                 DrawSelectedTile();
             }
@@ -324,6 +326,78 @@ namespace TilemapEditor
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// When the Modify Tilemap Button is pressed
+        /// Get all the infos of the selected tilemap and go to the modify tilemap tab
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event</param>
+        private void ModifyTilemapBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int id = (int)TilemapsDgv.CurrentRow.Cells[0].Value;
+                currMap = db.GetTilemap(id);
+                TilemapLbl.Text = $"Tilemap : {currMap.Name} - Tileset : {currMap.GetTileset.Name}";
+                selectTilemap = 0;
+                DrawTileTilemap();
+                TilemapPbx.Image = currMap.GetImage;
+                MainTabControl.SelectedIndex = 3;
+                ModifyTilemapPage.Enabled = true;
+            }
+            catch
+            {
+                Console.WriteLine("error");
+            }
+        }
+
+        /// <summary>
+        /// Draw the tileset pbx of the Modify Tilemap tab
+        /// </summary>
+        private void DrawTileTilemap()
+        {
+            TilemapTilesetPbx.Image = currMap!.GetTileset.GetSelectedImage(selectTilemap);
+        }
+
+        /// <summary>
+        /// When the tileset picturebox of the modify tilemap tab is clicked
+        /// Verify if we chose a correct tile and change the selected tile to it
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event</param>
+        private void TilemapTilesetPbx_Click(object sender, EventArgs e)
+        {
+            MouseEventArgs me = (MouseEventArgs)e;
+            int x = (int)Math.Floor(me.X / 32.0d);
+            int y = (int)Math.Floor(me.Y / 32.0d);
+            int nbr = x + y * 7;
+            if (nbr >= currMap!.GetTileset.Size)
+            {
+                return;
+            }
+            selectTilemap = nbr;
+            DrawTileTilemap();
+        }
+
+        private void TilemapPbx_Click(object sender, EventArgs e)
+        {
+
+            MouseEventArgs me = (MouseEventArgs)e;
+            int x = (int)Math.Floor(me.X / 16.0d);
+            int y = (int)Math.Floor(me.Y / 16.0d);
+            currMap!.setTiles(y, x, selectTilemap);
+            TilemapPbx.Image = currMap!.GetImage;
+
+        }
+
+        private void SaveBtn_Click(object sender, EventArgs e)
+        {
+            db.ModifyMap(currMap!.Id, currMap.GetTiles);
+            currMap = db.GetTilemap(currMap.Id);
+            TilemapPbx.Image = currMap!.GetImage;
+            DrawTileTilemap();
         }
     }
 }

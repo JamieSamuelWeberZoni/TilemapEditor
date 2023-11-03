@@ -50,6 +50,9 @@
             this.PreviewTilemapBtn = new System.Windows.Forms.Button();
             this.TilemapsDgv = new System.Windows.Forms.DataGridView();
             this.ModifyTilemapPage = new System.Windows.Forms.TabPage();
+            this.SaveBtn = new System.Windows.Forms.Button();
+            this.TilemapLbl = new System.Windows.Forms.Label();
+            this.TilemapTilesetPbx = new System.Windows.Forms.PictureBox();
             this.TilemapPbx = new System.Windows.Forms.PictureBox();
             this.MainTabControl.SuspendLayout();
             this.TilesetListPage.SuspendLayout();
@@ -60,6 +63,7 @@
             this.TilemapListPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TilemapsDgv)).BeginInit();
             this.ModifyTilemapPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TilemapTilesetPbx)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TilemapPbx)).BeginInit();
             this.SuspendLayout();
             // 
@@ -171,7 +175,7 @@
             this.AddTileBtn.Name = "AddTileBtn";
             this.AddTileBtn.Size = new System.Drawing.Size(197, 37);
             this.AddTileBtn.TabIndex = 8;
-            this.AddTileBtn.Text = "Ajouter une nouvelle tile";
+            this.AddTileBtn.Text = "Ajouter des nouvelle tiles";
             this.AddTileBtn.UseVisualStyleBackColor = true;
             this.AddTileBtn.Click += new System.EventHandler(this.AddTileBtn_Click);
             // 
@@ -275,6 +279,7 @@
             this.ModifyTilemapBtn.TabIndex = 8;
             this.ModifyTilemapBtn.Text = "Modifier Tilemap";
             this.ModifyTilemapBtn.UseVisualStyleBackColor = true;
+            this.ModifyTilemapBtn.Click += new System.EventHandler(this.ModifyTilemapBtn_Click);
             // 
             // PreviewTilemapBtn
             // 
@@ -306,6 +311,9 @@
             // 
             // ModifyTilemapPage
             // 
+            this.ModifyTilemapPage.Controls.Add(this.SaveBtn);
+            this.ModifyTilemapPage.Controls.Add(this.TilemapLbl);
+            this.ModifyTilemapPage.Controls.Add(this.TilemapTilesetPbx);
             this.ModifyTilemapPage.Controls.Add(this.TilemapPbx);
             this.ModifyTilemapPage.Location = new System.Drawing.Point(4, 24);
             this.ModifyTilemapPage.Name = "ModifyTilemapPage";
@@ -315,6 +323,35 @@
             this.ModifyTilemapPage.Text = "Modifier Tilemap";
             this.ModifyTilemapPage.UseVisualStyleBackColor = true;
             // 
+            // SaveBtn
+            // 
+            this.SaveBtn.Location = new System.Drawing.Point(692, 520);
+            this.SaveBtn.Name = "SaveBtn";
+            this.SaveBtn.Size = new System.Drawing.Size(92, 23);
+            this.SaveBtn.TabIndex = 5;
+            this.SaveBtn.Text = "Sauvergarder";
+            this.SaveBtn.UseVisualStyleBackColor = true;
+            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            // 
+            // TilemapLbl
+            // 
+            this.TilemapLbl.AutoSize = true;
+            this.TilemapLbl.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TilemapLbl.Location = new System.Drawing.Point(6, 521);
+            this.TilemapLbl.Name = "TilemapLbl";
+            this.TilemapLbl.Size = new System.Drawing.Size(140, 20);
+            this.TilemapLbl.TabIndex = 4;
+            this.TilemapLbl.Text = "Tilemap :     Tileset :";
+            // 
+            // TilemapTilesetPbx
+            // 
+            this.TilemapTilesetPbx.Location = new System.Drawing.Point(560, 6);
+            this.TilemapTilesetPbx.Name = "TilemapTilesetPbx";
+            this.TilemapTilesetPbx.Size = new System.Drawing.Size(224, 512);
+            this.TilemapTilesetPbx.TabIndex = 3;
+            this.TilemapTilesetPbx.TabStop = false;
+            this.TilemapTilesetPbx.Click += new System.EventHandler(this.TilemapTilesetPbx_Click);
+            // 
             // TilemapPbx
             // 
             this.TilemapPbx.Location = new System.Drawing.Point(6, 6);
@@ -322,6 +359,7 @@
             this.TilemapPbx.Size = new System.Drawing.Size(512, 512);
             this.TilemapPbx.TabIndex = 0;
             this.TilemapPbx.TabStop = false;
+            this.TilemapPbx.Click += new System.EventHandler(this.TilemapPbx_Click);
             // 
             // MainForm
             // 
@@ -344,6 +382,8 @@
             this.TilemapListPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TilemapsDgv)).EndInit();
             this.ModifyTilemapPage.ResumeLayout(false);
+            this.ModifyTilemapPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TilemapTilesetPbx)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TilemapPbx)).EndInit();
             this.ResumeLayout(false);
 
@@ -374,5 +414,8 @@
         private Button ModifyTileBtn;
         private Button AddTileBtn;
         private PictureBox TilemapPbx;
+        private PictureBox TilemapTilesetPbx;
+        private Label TilemapLbl;
+        private Button SaveBtn;
     }
 }

@@ -38,7 +38,11 @@ namespace TilemapEditor
         /// </summary>
         private int[,] tiles;
 
+        public int Id { get { return id; } }
+
         public string Name { get { return name; } }
+
+        public int[,] GetTiles { get { return tiles; } }
 
         /// <summary>
         /// The constructor of the class
@@ -83,6 +87,28 @@ namespace TilemapEditor
                 g.Dispose();
                 return img;
             }
+        }
+
+        /// <summary>
+        /// Get the tileset of the tilemap
+        /// </summary>
+        public Tileset GetTileset
+        {
+            get
+            {
+                return tileset;
+            }
+        }
+
+        /// <summary>
+        /// Set the given tile with the given id
+        /// </summary>
+        /// <param name="x">The x position of the tile</param>
+        /// <param name="y">The y position of the tile</param>
+        /// <param name="id">The id of the tile</param>
+        public void setTiles(int x, int y, int id)
+        {
+            tiles[x, y] = id;
         }
     }
 }
