@@ -98,6 +98,18 @@ namespace TilemapEditor
             }
         }
 
+        public Bitmap GetSelectedImage(int selectedTile)
+        {
+            Bitmap img = this.GetImage;
+            Graphics g = Graphics.FromImage(img);
+            int x = (selectedTile % 7) * 32;
+            int y = Convert.ToInt32(Math.Floor(selectedTile / 7.0)) * 32;
+            g.DrawRectangle(new Pen(Color.Black), new Rectangle(x, y, 31, 31));
+            g.DrawRectangle(new Pen(Color.White), new Rectangle(x + 1, y + 1, 29, 29));
+            g.Dispose();
+            return img;
+        }
+
         public int Size
         {
             get

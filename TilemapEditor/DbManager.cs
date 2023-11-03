@@ -215,7 +215,7 @@ namespace TilemapEditor
             {
                 ["@id"] = (idTileset, MySqlDbType.Int32)
             };
-            int number = (int)(GetTable("SELECT COUNT(idTile) AS 'number' FROM Tiles WHERE idTileset = @id;", opt).Rows[0]["number"]);
+            int number = (int)(long)(GetTable("SELECT COUNT(idTile) AS 'number' FROM Tiles WHERE idTileset = @id;", opt).Rows[0]["number"]);
             opt = new()
             {
                 ["@id"] = (idTileset, MySqlDbType.Int32),
@@ -241,7 +241,7 @@ namespace TilemapEditor
                 ["@id"] = (idTileset, MySqlDbType.Int32),
                 ["@number"] = (number, MySqlDbType.Int32)
             };
-            ChangeDatabase("UPDATE tiles SET image = @img WHERE idTileset = @id AND number = @number;", opt);
+            ChangeDatabase("UPDATE Tiles SET image = @img WHERE idTileset = @id AND number = @number;", opt);
         }
 
         /// <summary>
