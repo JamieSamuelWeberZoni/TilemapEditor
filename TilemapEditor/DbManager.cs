@@ -19,6 +19,12 @@ namespace TilemapEditor
     /// </summary>
     public class DbManager
     {
+        #region Global
+        // ---------------------------------------------------------------------------------------------------------------------------
+        // Global
+        // ---------------------------------------------------------------------------------------------------------------------------
+
+
         /// <summary>
         /// The connection to the database
         /// </summary>
@@ -100,17 +106,18 @@ namespace TilemapEditor
             }
             query.ExecuteNonQuery();
         }
+        #endregion
+
+        #region Tilesets
+        // ---------------------------------------------------------------------------------------------------------------------------
+        // Tilesets
+        // ---------------------------------------------------------------------------------------------------------------------------
+
 
         /// <summary>
         /// Get the list of tilesets from the database
         /// </summary>
         public DataTable Tilesets { get { return GetTable("SELECT Tilesets.idTileset AS 'Id', Tilesets.name AS 'Nom', COUNT(Tiles.idTileset) as 'Tiles' FROM Tilesets, Tiles WHERE Tilesets.idTileset = Tiles.idTileset GROUP BY Tilesets.idTileset"); } }
-
-        /// <summary>
-        /// Get the list of tilemaps from the database
-        /// </summary>
-        public DataTable Tilemaps { get { return GetTable("SELECT Tilemaps.idTilemap AS 'Id', Tilemaps.name AS 'Nom', Tilesets.name AS 'Tileset' FROM Tilemaps, Tilesets WHERE Tilemaps.idTileset = Tilesets.idTileset;"); } }
-
 
         /// <summary>
         /// Get a tileset depending on the given id
@@ -129,23 +136,6 @@ namespace TilemapEditor
         }
 
         /// <summary>
-        /// Get a tilemap depending on the given id
-        /// </summary>
-        /// <param name="id">The id of the tilemap</param>
-        /// <returns>A Tilemap instance</returns>
-        public Tilemap GetTilemap(int id)
-        {
-            Dictionary<string, (object, MySqlDbType)> opt = new()
-            {
-                ["@id"] = (id, MySqlDbType.Int32)
-            };
-            DataRow tilemap = GetTable("SELECT * FROM Tilemaps WHERE idTilemap = @id;", opt).Rows[0];
-            Tileset tileset = GetTileset((int)tilemap["idTileset"]);
-            DataTable tiles = GetTable("SELECT posX, posY, number FROM TilesPosition WHERE idTilemap = @id ORDER BY posX, posY;", opt);
-            return new Tilemap((int)tilemap["idTilemap"], (string)tilemap["name"], tileset, tiles);
-        }
-
-        /// <summary>
         /// Create a new tileset for the database
         /// </summary>
         /// <param name="name">The name of the tileset</param>
@@ -160,46 +150,12 @@ namespace TilemapEditor
             };
             ChangeDatabase("INSERT INTO Tilesets (name) VALUES (@name);", opt);
             int id = (int)(GetTable("SELECT Tilesets.idTileset AS 'id' FROM Tilesets WHERE Tilesets.name = @name;", opt).Rows[0]["id"]);
-            opt = new Dictionary<string, (object, MySqlDbType)>() {
+            opt = new Dictionary<string, (object, MySqlDbType)>()
+            {
                 ["@img"] = (ms.ToArray(), MySqlDbType.LongBlob),
                 ["@id"] = (Convert.ToString(id), MySqlDbType.Int32)
             };
             ChangeDatabase("INSERT INTO Tiles (number, image, idTileset) VALUES (0, @img, @id);", opt);
-        }
-
-        /// <summary>
-        /// Create a new tilemap for the database
-        /// </summary>
-        /// <param name="name">The name of the tilemap</param>
-        /// <param name="idTileset">The tileset the tilemap uses</param>
-        public void AddTilemap(string name, int idTileset)
-        {
-            Dictionary<string, (object, MySqlDbType)> opt = new()
-            {
-                ["@name"] = (name, MySqlDbType.VarChar),
-                ["@id"] = (idTileset, MySqlDbType.Int32)
-            };
-            ChangeDatabase("INSERT INTO Tilemaps (name, idTileset) VALUES (@name, @id);", opt);
-            opt = new()
-            {
-                ["@name"] = (name, MySqlDbType.VarChar)
-            };
-            int id = (int)(GetTable("SELECT idTilemap AS 'id' FROM Tilemaps WHERE name = @name;", opt).Rows[0]["id"]);
-            opt = new()
-            {
-                ["@id"] = (id, MySqlDbType.Int32),
-                ["@posX"] = (0, MySqlDbType.Int32),
-                ["@posY"] = (0, MySqlDbType.Int32)
-            };
-            for (int i = 0; i < 32; i++)
-            {
-                opt["@posX"] = (i, MySqlDbType.Int32);
-                for (int ii = 0; ii < 32; ii++)
-                {
-                    opt["@posY"] = (ii, MySqlDbType.Int32);
-                    ChangeDatabase("INSERT INTO TilesPosition (idTilemap, posX, posY, number) VALUES (@id, @posX, @posY, 0);", opt);
-                }
-            }
         }
 
         /// <summary>
@@ -243,6 +199,70 @@ namespace TilemapEditor
             };
             ChangeDatabase("UPDATE Tiles SET image = @img WHERE idTileset = @id AND number = @number;", opt);
         }
+        #endregion
+
+        #region Tilemaps
+        // ---------------------------------------------------------------------------------------------------------------------------
+        // Tilemaps
+        // ---------------------------------------------------------------------------------------------------------------------------
+
+
+        /// <summary>
+        /// Get the list of tilemaps from the database
+        /// </summary>
+        public DataTable Tilemaps { get { return GetTable("SELECT Tilemaps.idTilemap AS 'Id', Tilemaps.name AS 'Nom', Tilesets.name AS 'Tileset' FROM Tilemaps, Tilesets WHERE Tilemaps.idTileset = Tilesets.idTileset;"); } }
+
+        /// <summary>
+        /// Get a tilemap depending on the given id
+        /// </summary>
+        /// <param name="id">The id of the tilemap</param>
+        /// <returns>A Tilemap instance</returns>
+        public Tilemap GetTilemap(int id)
+        {
+            Dictionary<string, (object, MySqlDbType)> opt = new()
+            {
+                ["@id"] = (id, MySqlDbType.Int32)
+            };
+            DataRow tilemap = GetTable("SELECT * FROM Tilemaps WHERE idTilemap = @id;", opt).Rows[0];
+            Tileset tileset = GetTileset((int)tilemap["idTileset"]);
+            DataTable tiles = GetTable("SELECT posX, posY, number FROM TilesPosition WHERE idTilemap = @id ORDER BY posX, posY;", opt);
+            return new Tilemap((int)tilemap["idTilemap"], (string)tilemap["name"], tileset, tiles);
+        }
+
+        /// <summary>
+        /// Create a new tilemap for the database
+        /// </summary>
+        /// <param name="name">The name of the tilemap</param>
+        /// <param name="idTileset">The tileset the tilemap uses</param>
+        public void AddTilemap(string name, int idTileset)
+        {
+            Dictionary<string, (object, MySqlDbType)> opt = new()
+            {
+                ["@name"] = (name, MySqlDbType.VarChar),
+                ["@id"] = (idTileset, MySqlDbType.Int32)
+            };
+            ChangeDatabase("INSERT INTO Tilemaps (name, idTileset) VALUES (@name, @id);", opt);
+            opt = new()
+            {
+                ["@name"] = (name, MySqlDbType.VarChar)
+            };
+            int id = (int)(GetTable("SELECT idTilemap AS 'id' FROM Tilemaps WHERE name = @name;", opt).Rows[0]["id"]);
+            opt = new()
+            {
+                ["@id"] = (id, MySqlDbType.Int32),
+                ["@posX"] = (0, MySqlDbType.Int32),
+                ["@posY"] = (0, MySqlDbType.Int32)
+            };
+            for (int i = 0; i < 32; i++)
+            {
+                opt["@posX"] = (i, MySqlDbType.Int32);
+                for (int ii = 0; ii < 32; ii++)
+                {
+                    opt["@posY"] = (ii, MySqlDbType.Int32);
+                    ChangeDatabase("INSERT INTO TilesPosition (idTilemap, posX, posY, number) VALUES (@id, @posX, @posY, 0);", opt);
+                }
+            }
+        }
 
         /// <summary>
         /// Modify The tilemap in the database
@@ -264,10 +284,11 @@ namespace TilemapEditor
                 for (int ii = 0; ii < 32; ii++)
                 {
                     opt["@posY"] = (ii, MySqlDbType.Int32);
-                    opt["@number"] = (tiles[i,ii], MySqlDbType.Int32);
+                    opt["@number"] = (tiles[i, ii], MySqlDbType.Int32);
                     ChangeDatabase("UPDATE TilesPosition SET number = @number WHERE idTilemap = @id AND posX = @posX AND posY = @posY;", opt);
                 }
             }
         }
+        #endregion
     }
 }

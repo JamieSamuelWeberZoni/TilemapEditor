@@ -98,6 +98,11 @@ namespace TilemapEditor
             }
         }
 
+        /// <summary>
+        /// Return an image of all the tiles with one of them highlined
+        /// </summary>
+        /// <param name="selectedTile">The selected tile to highline</param>
+        /// <returns>An image of all the tiles</returns>
         public Bitmap GetSelectedImage(int selectedTile)
         {
             Bitmap img = this.GetImage;
@@ -110,6 +115,9 @@ namespace TilemapEditor
             return img;
         }
 
+        /// <summary>
+        /// Get the size of the tileset
+        /// </summary>
         public int Size
         {
             get

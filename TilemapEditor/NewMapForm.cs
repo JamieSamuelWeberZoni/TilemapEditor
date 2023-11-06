@@ -28,6 +28,9 @@ namespace TilemapEditor
         /// </summary>
         MainForm main;
 
+        /// <summary>
+        /// The list of tilesets
+        /// </summary>
         Tileset[] tilesets;
 
         /// <summary>

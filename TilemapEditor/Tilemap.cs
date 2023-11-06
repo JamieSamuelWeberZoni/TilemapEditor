@@ -38,10 +38,19 @@ namespace TilemapEditor
         /// </summary>
         private int[,] tiles;
 
+        /// <summary>
+        /// Get the id of the tileset
+        /// </summary>
         public int Id { get { return id; } }
 
+        /// <summary>
+        /// Get the name of the tileset
+        /// </summary>
         public string Name { get { return name; } }
 
+        /// <summary>
+        /// Get the list of tile numbers of the tileset
+        /// </summary>
         public int[,] GetTiles { get { return tiles; } }
 
         /// <summary>
