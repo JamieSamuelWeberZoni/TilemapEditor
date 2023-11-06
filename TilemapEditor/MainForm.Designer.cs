@@ -234,7 +234,7 @@
             this.TilesetPbx.Size = new System.Drawing.Size(224, 512);
             this.TilesetPbx.TabIndex = 2;
             this.TilesetPbx.TabStop = false;
-            this.TilesetPbx.Click += new System.EventHandler(this.TilesetPbx_Click);
+            this.TilesetPbx.Click += new System.EventHandler(this.TilesetTilesPbx_Click);
             // 
             // TilemapListPage
             // 

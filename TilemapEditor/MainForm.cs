@@ -1,5 +1,6 @@
 
 using System.Data;
+using ZstdSharp.Unsafe;
 /**
 * Project      : Tilemap Editor
 * Description  : A C# program where you can modify and create tilesets and tilemaps with an access to a database
@@ -14,6 +15,12 @@ namespace TilemapEditor
     /// </summary>
     public partial class MainForm : Form
     {
+        #region Global
+        // --------------------------------------------------------------------------------------------------------------------
+        // Global
+        // --------------------------------------------------------------------------------------------------------------------
+
+
         /// <summary>
         /// The manager of the database
         /// </summary>
@@ -25,20 +32,6 @@ namespace TilemapEditor
         private static MainForm? instance;
 
         /// <summary>
-        /// The selected tile in the modify tileset tab
-        /// </summary>
-        private int selectTileset;
-
-        private Tileset? currSet;
-
-        /// <summary>
-        /// The selected tile in the modify tilemap tab
-        /// </summary>
-        private int selectTilemap;
-
-        private Tilemap? currMap;
-
-        /// <summary>
         /// The constructor of this class
         /// initialize the components and get the instance of DbManager
         /// </summary>
@@ -46,8 +39,8 @@ namespace TilemapEditor
         {
             InitializeComponent();
             db = DbManager.Instance;
-            selectTilemap = 0;
-            selectTileset = 0;
+            tileTilemap = 0;
+            tileTileset = 0;
         }
 
         /// <summary>
@@ -80,19 +73,39 @@ namespace TilemapEditor
         }
 
         /// <summary>
+        /// Verify if we chose a correct tile and change the selected tile to it
+        /// </summary>
+        /// <param name="e">The mouse event to get the positions</param>
+        /// <param name="size">The size of the tileset</param>
+        /// <returns>null if out of bound, else the number of the tile</returns>
+        private int? TilesPbxClicked (MouseEventArgs e, int size)
+        {
+            int x = (int)Math.Floor(e.X / 32.0d);
+            int y = (int)Math.Floor(e.Y / 32.0d);
+            int nbr = x + y * 7;
+            if (nbr >= size)
+            {
+                return null;
+            }
+            else
+            {
+                return nbr;
+            }
+        }
+        #endregion
+
+        #region List Tilesets
+        // --------------------------------------------------------------------------------------------------------------------
+        // List Tilesets
+        // --------------------------------------------------------------------------------------------------------------------
+
+
+        /// <summary>
         /// Get the list of tilesets from the database and show it in a DataGridView
         /// </summary>
         public void RefreshTilesets()
         {
             TilesetsDgv.DataSource = db.Tilesets;
-        }
-
-        /// <summary>
-        /// Get the list of tilemaps from the database and show it in a DataGridView
-        /// </summary>
-        public void RefreshTilemaps()
-        {
-            TilemapsDgv.DataSource = db.Tilemaps;
         }
 
         /// <summary>
@@ -109,19 +122,6 @@ namespace TilemapEditor
         }
 
         /// <summary>
-        /// When the preview tilemap button is clicked
-        /// show the image of the tilemap
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event</param>
-        private void PreviewTilemapBtn_Click(object sender, EventArgs e)
-        {
-            int id = (int)TilemapsDgv.CurrentRow.Cells[0].Value;
-            TilemapForm form = new(db.GetTilemap(id));
-            form.Show();
-        }
-
-        /// <summary>
         /// When the new tileset button is clicked
         /// open a form to create a new tileset
         /// </summary>
@@ -131,29 +131,6 @@ namespace TilemapEditor
         {
             new NewSetForm().Show();
             this.Enabled = false;
-        }
-
-        /// <summary>
-        /// When the new tilemap button is clicked
-        /// open a form to create a new tilemap
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event</param>
-        private void NewTilemapBtn_Click(object sender, EventArgs e)
-        {
-            new NewMapForm().Show();
-            this.Enabled = false;
-        }
-
-        /// <summary>
-        /// When the refresh tilemaps button is clicked
-        /// Refresh the list of tilemaps
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event</param>
-        private void RefreshTilemapsBtn_Click(object sender, EventArgs e)
-        {
-            RefreshTilemaps();
         }
 
         /// <summary>
@@ -181,7 +158,7 @@ namespace TilemapEditor
                 currSet = db.GetTileset(id);
                 TilesetNameLbl.Text = $"Tileset : \"{currSet.Name}\"";
                 TilesetSizeLbl.Text = $"Tiles : {currSet.Size}/112";
-                selectTileset = 0;
+                tileTileset = 0;
                 DrawSelectedTile();
                 MainTabControl.SelectedIndex = 1;
                 ModifyTilesetPage.Enabled = true;
@@ -191,24 +168,117 @@ namespace TilemapEditor
                 MessageBox.Show("Erreur");
             }
         }
+        #endregion
+
+        #region List Tilemaps
+        // --------------------------------------------------------------------------------------------------------------------
+        // List Tilemaps
+        // --------------------------------------------------------------------------------------------------------------------
+
 
         /// <summary>
-        /// When the tileset image PictureBox is clicked
-        /// Verify if we chose a correct tile and change the selected tile to it
+        /// Get the list of tilemaps from the database and show it in a DataGridView
+        /// </summary>
+        public void RefreshTilemaps()
+        {
+            TilemapsDgv.DataSource = db.Tilemaps;
+        }
+
+        /// <summary>
+        /// When the preview tilemap button is clicked
+        /// show the image of the tilemap
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event</param>
-        private void TilesetPbx_Click(object sender, EventArgs e)
+        private void PreviewTilemapBtn_Click(object sender, EventArgs e)
         {
-            MouseEventArgs me = (MouseEventArgs)e;
-            int x = (int)Math.Floor(me.X / 32.0d);
-            int y = (int)Math.Floor(me.Y / 32.0d);
-            int nbr = x + y * 7;
-            if (nbr >= currSet!.Size)
+            int id = (int)TilemapsDgv.CurrentRow.Cells[0].Value;
+            TilemapForm form = new(db.GetTilemap(id));
+            form.Show();
+        }
+
+        /// <summary>
+        /// When the new tilemap button is clicked
+        /// open a form to create a new tilemap
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event</param>
+        private void NewTilemapBtn_Click(object sender, EventArgs e)
+        {
+            new NewMapForm().Show();
+            this.Enabled = false;
+        }
+
+        /// <summary>
+        /// When the refresh tilemaps button is clicked
+        /// Refresh the list of tilemaps
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event</param>
+        private void RefreshTilemapsBtn_Click(object sender, EventArgs e)
+        {
+            RefreshTilemaps();
+        }
+
+        /// <summary>
+        /// When the Modify Tilemap Button is pressed
+        /// Get all the infos of the selected tilemap and go to the modify tilemap tab
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event</param>
+        private void ModifyTilemapBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int id = (int)TilemapsDgv.CurrentRow.Cells[0].Value;
+                currMap = db.GetTilemap(id);
+                TilemapLbl.Text = $"Tilemap : {currMap.Name} - Tileset : {currMap.GetTileset.Name}";
+                tileTilemap = 0;
+                DrawTileTilemap();
+                TilemapPbx.Image = currMap.GetImage;
+                MainTabControl.SelectedIndex = 3;
+                ModifyTilemapPage.Enabled = true;
+            }
+            catch
+            {
+                Console.WriteLine("error");
+            }
+        }
+        #endregion
+
+        #region Modify Tilesets
+        // --------------------------------------------------------------------------------------------------------------------
+        // Modify Tilesets
+        // --------------------------------------------------------------------------------------------------------------------
+
+
+        /// <summary>
+        /// The selected tile in the modify tileset tab
+        /// </summary>
+        private int tileTileset;
+
+        /// <summary>
+        /// The current tileset of the tileset tabs
+        /// </summary>
+        private Tileset? currSet;
+
+        /// <summary>
+        /// When the tileset image PictureBox is clicked
+        /// Call TilesPbxClicked and set the selected tile if not null
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event</param>
+        private void TilesetTilesPbx_Click(object sender, EventArgs e)
+        {
+            int? nbr = TilesPbxClicked((MouseEventArgs)e, currSet!.Size);
+            if (nbr == null)
             {
                 return;
             }
-            selectTileset = nbr;
+            else
+            {
+                tileTileset = nbr.Value;
+            }
             DrawSelectedTile();
         }
 
@@ -220,10 +290,10 @@ namespace TilemapEditor
             Bitmap tile = new Bitmap(64, 64);
             Graphics g = Graphics.FromImage(tile);
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-            g.DrawImage(currSet!.GetTiles[selectTileset], 0, 0, 65, 65);
+            g.DrawImage(currSet!.GetTiles[tileTileset], 0, 0, 65, 65);
             g.Dispose();
             TileTilesetPbx.Image = tile;
-            TilesetPbx.Image = currSet.GetSelectedImage(selectTileset);
+            TilesetPbx.Image = currSet.GetSelectedImage(tileTileset);
         }
 
         /// <summary>
@@ -237,7 +307,7 @@ namespace TilemapEditor
             Bitmap? img = GetTileFromFile();
             if (img != null)
             {
-                db.ModifyTile(currSet!.Id, selectTileset, img);
+                db.ModifyTile(currSet!.Id, tileTileset, img);
                 currSet = db.GetTileset(currSet.Id);
                 DrawSelectedTile();
             }
@@ -254,7 +324,7 @@ namespace TilemapEditor
             Bitmap[]? img = GetMultipleTilesFromFile();
             if (img != null)
             {
-                foreach(Bitmap tile in img)
+                foreach (Bitmap tile in img)
                 {
                     db.AddTile(currSet!.Id, tile);
                 }
@@ -263,20 +333,48 @@ namespace TilemapEditor
         }
 
         /// <summary>
-        /// Get a 16x16 image from a file
+        /// Get multiple or one 16x16 image from a file
         /// </summary>
         /// <returns>A 16x16 image</returns>
-        private Bitmap? GetTileFromFile()
+        private Bitmap[]? GetMultipleTilesFromFile()
+        {
+            Bitmap? bmp = GetTileFromFile(true);
+            if (bmp != null)
+            {
+                int width = bmp.Width / 16;
+                int height = bmp.Height / 16;
+                Bitmap[] tiles = new Bitmap[width * height];
+                for (int i = 0; i < width; i++)
+                {
+                    for (int ii = 0; ii < height; ii++)
+                    {
+                        tiles[i + ii * width] = bmp.Clone(new Rectangle(i * 16, ii * 16, 16, 16), bmp.PixelFormat);
+                    }
+                }
+                return tiles;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get a single or multiple 16x16 tile images from a file
+        /// </summary>
+        /// <param name="multiple">Whether we get multiple tiles</param>
+        /// <returns>The returned image</returns>
+        private Bitmap? GetTileFromFile(bool multiple = false)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "16x16 Images (*.png)|*.png";
+            ofd.Filter = multiple ? "Image de Tileset (multiple de 16) (*.png)|*.png" : "16x16 Image (*.png)|*.png";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 string filepath = ofd.FileName;
                 Bitmap bmp = new Bitmap(filepath);
-                if (bmp.Width != 16 && bmp.Height != 16)
+                if ((bmp.Width != 16 && bmp.Height != 16 && !multiple) || (bmp.Width % 16 != 0 && bmp.Height % 16 != 0 && multiple))
                 {
-                    MessageBox.Show("Veuillez s'il vous plait choisir une image 16x16 pixels");
+                    MessageBox.Show(multiple ? "Veuillez s'il vous plait choisir une image avec taille en multiple de 16 (ex: 3px*64px)" : "Veuillez s'il vous plait choisir une image 16x16 pixels");
                     return null;
                 }
                 else
@@ -289,115 +387,79 @@ namespace TilemapEditor
                 return null;
             }
         }
+        #endregion
+
+        #region ModifyTilemaps
+        // --------------------------------------------------------------------------------------------------------------------
+        // Modify Tilemaps
+        // --------------------------------------------------------------------------------------------------------------------
+
 
         /// <summary>
-        /// Get multiple or one 16x16 image from a file
+        /// The selected tile in the modify tilemap tab
         /// </summary>
-        /// <returns>A 16x16 image</returns>
-        private Bitmap[]? GetMultipleTilesFromFile()
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "16x16 Images/Image de Tileset (multiple de 16) (*.png)|*.png";
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                string filepath = ofd.FileName;
-                Bitmap bmp = new Bitmap(filepath);
-                if (bmp.Width % 16 != 0 && bmp.Height % 16 != 0)
-                {
-                    MessageBox.Show("Veuillez s'il vous plait choisir une image 16x16 pixels");
-                    return null;
-                }
-                else
-                {
-                    int width = bmp.Width / 16;
-                    int height = bmp.Height / 16;
-                    Bitmap[] tiles = new Bitmap[width * height];
-                    for (int i = 0; i < width; i++)
-                    {
-                        for (int ii = 0; ii < height; ii++)
-                        {
-                            tiles[i + ii * width] = bmp.Clone(new Rectangle(i * 16, ii * 16, 16, 16), bmp.PixelFormat);
-                        }
-                    }
-                    return tiles;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
+        private int tileTilemap;
 
         /// <summary>
-        /// When the Modify Tilemap Button is pressed
-        /// Get all the infos of the selected tilemap and go to the modify tilemap tab
+        /// The current tilemap of the tilemap tabs
         /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event</param>
-        private void ModifyTilemapBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                int id = (int)TilemapsDgv.CurrentRow.Cells[0].Value;
-                currMap = db.GetTilemap(id);
-                TilemapLbl.Text = $"Tilemap : {currMap.Name} - Tileset : {currMap.GetTileset.Name}";
-                selectTilemap = 0;
-                DrawTileTilemap();
-                TilemapPbx.Image = currMap.GetImage;
-                MainTabControl.SelectedIndex = 3;
-                ModifyTilemapPage.Enabled = true;
-            }
-            catch
-            {
-                Console.WriteLine("error");
-            }
-        }
+        private Tilemap? currMap;
 
         /// <summary>
         /// Draw the tileset pbx of the Modify Tilemap tab
         /// </summary>
         private void DrawTileTilemap()
         {
-            TilemapTilesetPbx.Image = currMap!.GetTileset.GetSelectedImage(selectTilemap);
+            TilemapTilesetPbx.Image = currMap!.GetTileset.GetSelectedImage(tileTilemap);
         }
 
         /// <summary>
         /// When the tileset picturebox of the modify tilemap tab is clicked
-        /// Verify if we chose a correct tile and change the selected tile to it
+        /// Call TilesPbxClicked and set the selected tile if not null
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event</param>
         private void TilemapTilesetPbx_Click(object sender, EventArgs e)
         {
-            MouseEventArgs me = (MouseEventArgs)e;
-            int x = (int)Math.Floor(me.X / 32.0d);
-            int y = (int)Math.Floor(me.Y / 32.0d);
-            int nbr = x + y * 7;
-            if (nbr >= currMap!.GetTileset.Size)
+            int? nbr = TilesPbxClicked((MouseEventArgs)e, currMap!.GetTileset.Size);
+            if (nbr == null)
             {
                 return;
             }
-            selectTilemap = nbr;
+            else
+            {
+                tileTilemap = nbr.Value;
+            }
             DrawTileTilemap();
         }
 
+        /// <summary>
+        /// When the tilemap picturebox is clicked
+        /// Change the clicked tile from the tilemap to the selected tile
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event</param>
         private void TilemapPbx_Click(object sender, EventArgs e)
         {
 
             MouseEventArgs me = (MouseEventArgs)e;
             int x = (int)Math.Floor(me.X / 16.0d);
             int y = (int)Math.Floor(me.Y / 16.0d);
-            currMap!.setTiles(y, x, selectTilemap);
+            currMap!.setTiles(y, x, tileTilemap);
             TilemapPbx.Image = currMap!.GetImage;
 
         }
 
+        /// <summary>
+        /// When the save button is clicked
+        /// Modify in the database the current tilemap
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event</param>
         private void SaveBtn_Click(object sender, EventArgs e)
         {
             db.ModifyMap(currMap!.Id, currMap.GetTiles);
-            currMap = db.GetTilemap(currMap.Id);
-            TilemapPbx.Image = currMap!.GetImage;
-            DrawTileTilemap();
         }
+        #endregion
     }
 }
