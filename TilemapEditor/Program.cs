@@ -18,7 +18,14 @@ namespace TilemapEditor
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(MainForm.Instance);
+            if (MainForm.Instance == null)
+            {
+                Application.Exit();
+            }
+            else
+            {
+                Application.Run(MainForm.Instance);
+            }
         }
     }
 }

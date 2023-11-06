@@ -38,7 +38,16 @@ namespace TilemapEditor
         private MainForm()
         {
             InitializeComponent();
-            db = DbManager.Instance;
+            try
+            {
+                db = DbManager.Instance;
+            }
+            catch
+            {
+                MessageBox.Show("Le programme n'arrive pas à atteindre la base de données, veuillez s'il-vous plaît ouvrir la base de données et vérifier que le schéma 'TilemapEditor' existe avec l'utilisateur 'dbTilemapEditor'");
+                db = null!;
+            }
+
             tileTilemap = 0;
             tileTileset = 0;
         }
@@ -46,13 +55,17 @@ namespace TilemapEditor
         /// <summary>
         /// The singleton for this class to get only one instance
         /// </summary>
-        public static MainForm Instance
+        public static MainForm? Instance
         {
             get
             {
                 if (instance == null)
                 {
                     instance = new MainForm();
+                    if (instance.db == null)
+                    {
+                        return null;
+                    }
                 }
                 return instance;
             }
