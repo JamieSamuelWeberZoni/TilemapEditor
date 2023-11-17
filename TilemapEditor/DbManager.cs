@@ -146,14 +146,14 @@ namespace TilemapEditor
             tile.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
             Dictionary<string, (object, MySqlDbType)> opt = new Dictionary<string, (object, MySqlDbType)>()
             {
-                ["@name"] = (ms.ToArray(), MySqlDbType.VarChar)
+                ["@name"] = (name, MySqlDbType.VarChar)
             };
             ChangeDatabase("INSERT INTO Tilesets (name) VALUES (@name);", opt);
             int id = (int)(GetTable("SELECT Tilesets.idTileset AS 'id' FROM Tilesets WHERE Tilesets.name = @name;", opt).Rows[0]["id"]);
             opt = new Dictionary<string, (object, MySqlDbType)>()
             {
                 ["@img"] = (ms.ToArray(), MySqlDbType.LongBlob),
-                ["@id"] = (Convert.ToString(id), MySqlDbType.Int32)
+                ["@id"] = (id, MySqlDbType.Int32)
             };
             ChangeDatabase("INSERT INTO Tiles (number, image, idTileset) VALUES (0, @img, @id);", opt);
         }
@@ -163,7 +163,7 @@ namespace TilemapEditor
         /// </summary>
         /// <param name="idTileset">The id of the tileset</param>
         /// <param name="tile">The image of the tile</param>
-        public void AddTile(int idTileset, Bitmap tile)
+        public bool AddTile(int idTileset, Bitmap tile)
         {
             MemoryStream ms = new MemoryStream();
             tile.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
@@ -172,6 +172,10 @@ namespace TilemapEditor
                 ["@id"] = (idTileset, MySqlDbType.Int32)
             };
             int number = (int)(long)(GetTable("SELECT COUNT(idTile) AS 'number' FROM Tiles WHERE idTileset = @id;", opt).Rows[0]["number"]);
+            if (number >= 112)
+            {
+                return false;
+            }
             opt = new()
             {
                 ["@id"] = (idTileset, MySqlDbType.Int32),
@@ -179,6 +183,7 @@ namespace TilemapEditor
                 ["@number"] = (number, MySqlDbType.Int32)
             };
             ChangeDatabase("INSERT INTO Tiles (idTileset, image, number) VALUES (@id, @img, @number);", opt);
+            return true;
         }
 
         /// <summary>

@@ -339,8 +339,13 @@ namespace TilemapEditor
             {
                 foreach (Bitmap tile in img)
                 {
-                    db.AddTile(currSet!.Id, tile);
+                    if (!db.AddTile(currSet!.Id, tile))
+                    {
+                        MessageBox.Show("Ne peut rajouter plus de tiles, maximum atteint");
+                        break;
+                    }
                 }
+                currSet = db.GetTileset(currSet.Id);
                 DrawSelectedTile();
             }
         }
